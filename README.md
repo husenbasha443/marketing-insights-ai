@@ -1,28 +1,38 @@
-# Customer Feedback Triage System
+# 📊 Marketing Insights AI
 
 ## 📌 Project Overview
 
-The **Customer Feedback Triage System** is an AI-powered text-to-decision application designed to automatically classify, prioritize, and route customer feedback. The system compares a **rule-based baseline approach** with an **Azure OpenAI–powered intelligent approach** to demonstrate the value of Large Language Models (LLMs) in real-world enterprise decision-making.
+**Marketing Insights AI** is an AI-powered customer feedback analysis system designed to convert raw, unstructured customer feedback into **actionable marketing insights**.
 
-This project is built as part of a **weekend assignment / learning project** and is suitable for demos, interviews, and academic submissions.
+The system intelligently compares a **rule-based baseline approach** with an **Azure OpenAI–powered intelligent approach**, clearly demonstrating how Large Language Models (LLMs) enhance real-world business analysis.
+
+This project is built as a **learning + academic submission project** and is suitable for **demos, viva explanations, interviews, and Azure-based evaluations**.
 
 ---
 
 ## 🎯 Objectives
 
-* Automatically classify customer feedback into predefined categories
-* Assign urgency levels based on business impact
-* Suggest the next best action for support teams
-* Compare traditional rule-based logic with Azure OpenAI results
-* Ensure consistent, explainable, and scalable decision-making
+* Analyze customer feedback text
+* Detect customer sentiment (positive, negative, neutral)
+* Extract key themes from feedback
+* Identify customer complaints
+* Suggest improvements
+* Compare **baseline rules vs Azure OpenAI intelligence**
+* Produce consistent **structured JSON output**
 
 ---
 
 ## 🧠 Problem Statement
 
-Organizations receive hundreds of customer messages daily. Not all messages require the same urgency or action. Manual triage is slow and inconsistent.
+Marketing teams receive large volumes of customer feedback from reviews, surveys, and support tickets.
 
-This system solves the problem by converting **unstructured text feedback** into **structured triage decisions**.
+Manual analysis is:
+
+* Time-consuming
+* Subjective
+* Error-prone
+
+This system solves the problem by transforming **unstructured feedback text** into **structured, machine-readable insights** using a hybrid AI approach.
 
 ---
 
@@ -31,13 +41,15 @@ This system solves the problem by converting **unstructured text feedback** into
 ```
 Customer Feedback (Text)
         ↓
-Preprocessing
+Baseline Rule Engine (Keyword Logic)
         ↓
-Baseline Rule Engine (if-else)
+Confidence Check
         ↓
-Azure OpenAI (LLM Classification)
+If Confidence HIGH → Return Baseline Result
         ↓
-Result Comparison
+If Confidence LOW
+        ↓
+Azure OpenAI (LLM Analysis)
         ↓
 Final Structured Output (JSON)
 ```
@@ -47,106 +59,80 @@ Final Structured Output (JSON)
 ## 📂 Project Structure
 
 ```
-customer-feedback-triage/
+marketing-insights-ai/
 │
 ├── README.md
-├── baseline/
-│   └── rule_engine.py          # Rule-based classification logic
-│
-├── ai/
-│   ├── prompt.txt              # Azure OpenAI system prompt
-│   └── openai_client.py        # Azure OpenAI integration
-│
-├── app/
-│   └── app.py                  # Main application (CLI / Streamlit)
-│
-├── data/
-│   └── sample_feedback.json    # Test customer messages
-│
+├── app.py                  # Streamlit UI
+├── main.py                 # CLI execution
+├── baseline.py             # Rule-based logic
+├── openai_client.py        # Azure OpenAI integration
 ├── requirements.txt
-└── .env                        # Environment variables
+├── .env                    # Environment variables
+└── .venv/                  # Virtual environment
 ```
 
 ---
 
 ## 🧾 Required Output Format
 
-Every customer feedback message is converted into the following strict JSON format:
+Each customer feedback message is converted into the following strict JSON format:
 
 ```json
 {
-  "category": "Complaint | Feature Request | Praise | Question",
-  "urgency_level": "Low | Medium | High",
-  "suggested_action": "Respond | Escalate | Ignore | Forward",
-  "reasoning": "Explanation for the decision"
+  "sentiment": "positive | negative | neutral",
+  "themes": [],
+  "complaints": [],
+  "suggestions": []
 }
 ```
 
 ---
 
-## 🏷️ Classification Categories
+## 🏷️ Sentiment Types
 
-| Category        | Description                           |
-| --------------- | ------------------------------------- |
-| Complaint       | Issues, bugs, errors, dissatisfaction |
-| Feature Request | Suggestions for new features          |
-| Praise          | Positive feedback and appreciation    |
-| Question        | Requests for information or help      |
-
----
-
-## ⏱️ Urgency Levels
-
-| Level  | Meaning                          |
-| ------ | -------------------------------- |
-| Low    | Can wait, minimal impact         |
-| Medium | Needs timely attention           |
-| High   | Critical business or user impact |
+| Sentiment | Meaning                 |
+| --------- | ----------------------- |
+| Positive  | Satisfaction, praise    |
+| Negative  | Dissatisfaction, issues |
+| Neutral   | Informational or mixed  |
 
 ---
 
-## 🚦 Suggested Actions
+## 🧠 Baseline Rule-Based Logic
 
-| Action   | Description                  |
-| -------- | ---------------------------- |
-| Respond  | Normal support response      |
-| Escalate | Send to higher-level support |
-| Ignore   | No action required           |
-| Forward  | Route to another team        |
+The baseline system uses simple keyword-based rules such as:
 
----
-
-## 🧱 Baseline Rule-Based Logic
-
-The baseline system uses keyword-based rules such as:
-
-* Keywords like `crash`, `error`, `failed` → Complaint + High urgency
-* Keywords like `add`, `feature`, `request` → Feature Request
-* Keywords like `thank you`, `great`, `awesome` → Praise
-* Sentences ending with `?` → Question
+* `good`, `excellent` → Positive sentiment
+* `bad`, `worst` → Negative sentiment
+* `late`, `delay` → Delivery complaint
+* `quality` → Product quality theme
 
 ### Purpose of Baseline
 
-* Acts as a non-AI benchmark
-* Enables comparison with Azure OpenAI
+* Acts as a **non-AI benchmark**
+* Fast and cost-efficient
 * Highlights limitations of rule-based systems
+* Demonstrates why AI fallback is needed
 
 ---
 
 ## 🤖 Azure OpenAI (AI-Based Logic)
 
-Azure OpenAI uses a Large Language Model to:
+Azure OpenAI (via **Azure AI Foundry**) is used when baseline confidence is **LOW**.
 
-* Understand context and sentiment
-* Handle mixed or ambiguous messages
-* Provide reasoning for decisions
+The LLM:
+
+* Understands context and mixed sentiment
+* Extracts themes beyond keywords
+* Identifies implicit complaints
+* Suggests meaningful improvements
 
 ### Advantages
 
-* Better accuracy
+* High accuracy
 * Context awareness
-* Explainable decisions
-* Scales easily
+* Handles edge cases
+* Enterprise scalability
 
 ---
 
@@ -155,52 +141,26 @@ Azure OpenAI uses a Large Language Model to:
 ### System Prompt
 
 ```
-You are an intelligent Customer Feedback Triage System used by an enterprise support team.
+You are a marketing insights analyzer.
 
-Your task is to analyze a single customer feedback message and convert it into a structured triage decision.
+Your task is to analyze customer feedback and return structured insights.
 
-You must classify the feedback into exactly one category, determine its urgency level, suggest the most appropriate action, and clearly explain your reasoning.
+You must:
+- Determine sentiment
+- Extract key themes
+- Identify complaints
+- Suggest improvements
 
-You must strictly follow the allowed values and output format.
-
-----------------------------------
-ALLOWED CATEGORIES:
-- Complaint
-- Feature Request
-- Praise
-- Question
-
-ALLOWED URGENCY LEVELS:
-- Low
-- Medium
-- High
-
-ALLOWED ACTIONS:
-- Respond
-- Escalate
-- Ignore
-- Forward
-----------------------------------
-
-DECISION RULES:
-- Complaints related to payments, security, data loss, or service outages should usually be High urgency.
-- Feature requests are typically Medium or Low urgency unless they block core functionality.
-- Praise messages are Low urgency and usually require no action.
-- Questions should be Responded to unless they indicate a serious issue.
-
-You must infer intent even if the message contains mixed sentiment or unclear wording.
-
-----------------------------------
-OUTPUT FORMAT (STRICT JSON ONLY):
+Return ONLY valid JSON in the following format:
 
 {
-  "category": "<Complaint | Feature Request | Praise | Question>",
-  "urgency_level": "<Low | Medium | High>",
-  "suggested_action": "<Respond | Escalate | Ignore | Forward>",
-  "reasoning": "<short clear explanation>"
+  "sentiment": "",
+  "themes": [],
+  "complaints": [],
+  "suggestions": []
 }
 
-Do not include any text outside the JSON object.
+Do not include explanations or extra text.
 ```
 
 ---
@@ -208,41 +168,28 @@ Do not include any text outside the JSON object.
 ## 🧪 Sample Test Inputs
 
 ```
-The app keeps crashing when I try to make a payment.
+The delivery was late but the product quality is excellent.
 ```
 
 ```
-Can you please add a dark mode feature?
+The software features are powerful, but onboarding documentation is confusing.
 ```
 
 ```
-Great service! Very happy with the support team.
-```
-
-```
-How can I reset my password?
+Great experience overall, but customer support response time could improve.
 ```
 
 ---
 
-## 📊 Comparison: Baseline vs Azure OpenAI
+## 📊 Baseline vs Azure OpenAI Comparison
 
-| Feature               | Baseline | Azure OpenAI |
-| --------------------- | -------- | ------------ |
-| Accuracy              | Medium   | High         |
-| Context Understanding | Low      | High         |
-| Edge Case Handling    | Poor     | Excellent    |
-| Explainability        | Limited  | Strong       |
-| Scalability           | Limited  | High         |
-
----
-
-## 📈 Metrics (Optional Enhancements)
-
-* Classification accuracy
-* AI vs baseline disagreement rate
-* Response time
-* Edge case success rate
+| Feature               | Baseline  | Azure OpenAI |
+| --------------------- | --------- | ------------ |
+| Speed                 | Very Fast | Moderate     |
+| Accuracy              | Medium    | High         |
+| Context Understanding | Low       | High         |
+| Edge Case Handling    | Poor      | Excellent    |
+| Cost                  | Free      | Token-based  |
 
 ---
 
@@ -251,17 +198,21 @@ How can I reset my password?
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/husenbasha443/Customer-Feedback-Triage-System.git
-cd customer-feedback-triage
+git clone https://github.com/your-username/marketing-insights-ai.git
+cd marketing-insights-ai
 ```
+
+---
 
 ### 2️⃣ Create Virtual Environment
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate   # Linux/Mac
 .venv\Scripts\activate      # Windows
+source .venv/bin/activate   # Linux/Mac
 ```
+
+---
 
 ### 3️⃣ Install Dependencies
 
@@ -269,16 +220,44 @@ source .venv/bin/activate   # Linux/Mac
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Configure Environment Variables (.env)
+---
 
-```
-AZURE_OPENAI_ENDPOINT=your_endpoint
-AZURE_OPENAI_KEY=your_key
-AZURE_OPENAI_DEPLOYMENT=your_deployment_name
+### 4️⃣ Configure Environment Variables (`.env`)
+
+```env
+AZURE_OPENAI_ENDPOINT=https://<your-resource-name>.cognitiveservices.azure.com
+AZURE_OPENAI_API_KEY=your_api_key
+AZURE_OPENAI_MODEL=gpt-4o-mini
+AZURE_OPENAI_API_VERSION=2024-07-18
 ```
 
 ---
 
+## ▶️ Run Application
+
+### CLI Mode
+
+```bash
+python main.py
+```
+
+### Streamlit UI
+
+```bash
+streamlit run app.py
+```
+
+---
+
+## 🎓 What This Project Demonstrates
+
+* Azure OpenAI usage via Azure AI Foundry
+* Hybrid AI system design
+* Prompt engineering best practices
+* Baseline vs LLM comparison
+* Enterprise-ready architecture
+
+---
 
 ## 👤 Author
 
