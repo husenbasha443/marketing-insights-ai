@@ -198,7 +198,7 @@ Great experience overall, but customer support response time could improve.
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/your-username/marketing-insights-ai.git
+git clone https://github.com/husenbasha443/marketing-insights-ai.git
 cd marketing-insights-ai
 ```
 
